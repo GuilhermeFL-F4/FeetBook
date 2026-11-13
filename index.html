@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base Clone - Feed</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- OVERLAY ESCURO PARA O MENU MOBILE -->
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <!-- Ícone de Menu Hambúrguer (Aparece só no mobile) -->
+            <button class="hamburger-menu" id="menuToggle">☰</button>
+            
+            <div class="logo">FeetBook</div>
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar..." id="desktopSearchTrigger" readonly>
+            </div>
+            <button class="mobile-search-icon" id="mobileSearchTrigger">🔍</button>
+            <div class="search-screen" id="searchScreen">
+            <div class="search-screen-header">
+                <!-- Esta é a barra onde o usuário vai realmente digitar -->
+                <input type="text" placeholder="Digite sua pesquisa..." id="searchInput" autocomplete="off">
+                <button class="close-search" id="closeSearch">✕</button>
+            </div>
+                <!-- Esta tela fica vazia, pronta para receber os resultados do banco de dados -->
+            <div class="search-results">
+                <!-- Resultados aparecerão aqui -->
+                </div>
+            </div>
+            <div class="user-actions">
+                <button class="btn-upload">+ Post</button>
+                <button class="btn-login">Entrar</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="layout-container">
+        
+        <section class="feed">
+            <!-- Modelo de Post -->
+            <article class="post-card">
+                <header class="post-header">
+                    <img src="https://via.placeholder.com/60" alt="Avatar" class="avatar">
+                    <span class="username">NomeDoUsuario</span>
+                    <span class="post-time">há 2 horas</span>
+                </header>
+                <div class="post-content">
+                    <img src="https://via.placeholder.com/1080x720" alt="Conteúdo do post" class="post-image">
+                </div>
+                <footer class="post-actions">
+                    <button class="action-btn">👍 Curtir</button>
+                    <button class="action-btn">💬 Comentar</button>
+                </footer>
+            </article>
+        </section>
+
+        <!-- SIDEBAR (Vira menu lateral no Mobile) -->
+        <aside class="sidebar" id="mobileSidebar">
+            <!-- Botão de fechar (Aparece só no mobile) -->
+            <button class="close-menu" id="closeMenu">✕ Fechar</button>
+
+            <div class="sidebar-widget">
+                <h3>Grupos</h3>
+                <ul class="trending-list">
+                    <li><img src="https://via.placeholder.com/40" alt="Avatar" class="avatar">Grupo 1</li>
+                    <li><img src="https://via.placeholder.com/40" alt="Avatar" class="avatar">Grupo 2</li>
+                    <li><img src="https://via.placeholder.com/40" alt="Avatar" class="avatar">Grupo 3</li>
+                </ul>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Script de Toggle para o Menu Mobile -->
+    <script type="module" src="./script.js"></script>
+</body>
+</html>
