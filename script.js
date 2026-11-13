@@ -1,4 +1,6 @@
-import {MenuMobile, TelaPesquisa} from './interface.js';
+import {MenuMobile, TelaPesquisa, Configuracoes, AlternarTema} from './interface.js';
 
 MenuMobile();
 TelaPesquisa();
+Configuracoes();
+AlternarTema();

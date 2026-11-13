@@ -8,7 +8,7 @@
     font-family: sans-serif;
 }
 
-body {
+body.FeetChan {
     color: #8a0009;
     background-color: #ffccae;
     background-image: linear-gradient(to bottom, #ffccae, #f0f0f0);
@@ -17,8 +17,8 @@ body {
     background-attachment: fixed; 
 }
 
-/* Ocultar elementos mobile no Desktop */
-.hamburger-menu, .close-menu, .menu-overlay {
+
+.hamburger-menu, .close-menu, .menu-overlay, .black-overlay{
     display: none;
 }
 
@@ -57,7 +57,7 @@ body {
     margin: 20px auto;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: 1fr 300px; /* Feed ocupa o resto, Sidebar tem 300px fixos */
+    grid-template-columns: 1fr 300px; 
     gap: 30px;
     align-items: start;
 }
@@ -151,6 +151,207 @@ body {
     border-bottom: 1px solid #f0f0f0;
 }
 
+#button-config {
+    cursor: pointer;
+}
+
+.config-options {
+    display: none; 
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    grid-template-columns: 100px 1fr;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    border: 1px solid #1b1b1b;
+    border-radius: 8px;
+    padding: 20px;
+    z-index: 3000; 
+}
+
+.config-options li {
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.config-options.active {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    height: 60%;
+    width: 60%;
+
+}
+
+.black-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2500;
+}
+
+.config-sidebar {
+    border-right: 1px solid #c5c2c2; 
+    padding: 20px;
+}
+
+.config-sidebar ul {
+    list-style: none;
+}
+
+
+.config-options.active {
+    display: grid;
+    grid-template-columns: 200px 1fr; 
+    height: 60%;
+    width: 60%;
+}
+
+
+.config-sidebar {
+    border-right: 1px solid #ddd; 
+    padding: 20px;
+}
+
+.config-sidebar ul {
+    list-style: none;
+}
+
+.config-tab {
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    transition: background 0.2s;
+}
+
+
+.config-tab.active {
+    background-color: #ffccae;
+    font-weight: bold;
+}
+
+
+.config-content {
+    padding: 20px;
+}
+
+
+.config-panel {
+    display: none; 
+}
+
+
+.config-panel.active {
+    display: block; 
+}
+
+.black-overlay.active {
+    display: block;
+}
+
+.close-config {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: #8a0009;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Coloca as opções uma embaixo da outra */
+.theme-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Espaço entre as opções */
+    margin-top: 15px;
+}
+
+.theme-options label {
+    background: #ffffff;
+    padding: 15px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    display: block; /* Faz a caixa ocupar a largura inteira */
+    box-sizing: border-box;
+    text-align: left;
+    box-shadow: 0 0 0 1px #d8dee4; /* Borda cinza clarinha padrão */
+    transition: all 0.2s ease;
+}
+
+.theme-options label:hover {
+    background: #f5f6f8;
+}
+
+/* Esconde a bolinha padrão do input de radio, mas mantém ele clicável */
+.theme-options input {
+    clip: rect(0, 0, 0, 0);
+    border-width: 0;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+}
+
+/* A CORREÇÃO MÁGICA: Trocamos o ~ pelo + (Adjacent Sibling) */
+/* Agora ele pinta APENAS o label que vem imediatamente ao lado do input marcado */
+.theme-options input:checked + label {
+    box-shadow: 0 0 0 2px #8a0009; /* Borda mais grossa vermelha */
+    color: #8a0009;
+}
+
+.theme-options input:focus + label {
+    box-shadow: 0 0 0 2px #8a0009, 0 0 0 4px rgba(138, 0, 9, 0.2);
+}
+
+.theme-options label .title {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    font-size: 16px;
+    color: #1b1b1b; /* Garante que o texto fique escuro pra ler melhor */
+}
+
+/* Quando selecionado, o título também fica da cor do tema */
+.theme-options input:checked + label .title {
+    color: #8a0009; 
+}
+
+.theme-options label .description {
+    display: block;
+    font-size: 13px;
+    color: #596171;
+}
+
+
+
+/* =========================================
+   EFEITO DESENHADO À MÃO (MS PAINT)
+   ========================================= */
+.post-card, 
+.sidebar-widget, 
+.config-options,
+.search-bar,
+.btn-upload,
+.btn-login {
+    /* 1. Linha grossa e cor forte (como o lápis do Paint) */
+    border: 4px solid #0a0001; 
+    
+    /* 2. O TRUQUE MAGNÍFICO: Deforma os 4 cantos de forma irregular */
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    
+    /* 3. Sombra dura sem desfoque para dar o visual 8-bit/Pixel Art */
+    box-shadow: 4px 4px 0px #1b1b1b;
+}
+
 /* =========================================
    TELA DE PESQUISA FULLSCREEN
    ========================================= */
@@ -161,12 +362,12 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: #ffffff;
-    z-index: 2000; /* Fica acima da navbar e da sidebar */
-    display: none; /* Escondido por padrão */
+    z-index: 2000; 
+    display: none; 
     flex-direction: column;
 }
 
-/* O JS adiciona essa classe para exibir a tela */
+
 .search-screen.active {
     display: flex;
 }
@@ -207,12 +408,12 @@ body {
     background-attachment: fixed; 
 }
 
-/* O cursor indica que a barra do desktop clica para abrir a tela */
+
 #desktopSearchTrigger {
     cursor: pointer;
 }
 
-/* Esconde a lupa do celular no desktop */
+
 .mobile-search-icon {
     display: none;
 }
@@ -249,7 +450,7 @@ body {
         font-size: 1.5em;
         cursor: pointer;
         margin-right: 15px;
-        color: #d4d0d0; /* Corrigido para o tema escuro */
+        color: #d4d0d0;
     }
 
     .navbar-container {
@@ -257,30 +458,30 @@ body {
     }
 
     .search-bar {
-        display: none; /* Corrigido o erro do 'display: icon' */
+        display: none; 
     }
 
     .mobile-search-icon {
-        display: block; /* Mostra a lupa */
+        display: block; 
         background: none;
         border: none;
         font-size: 1.2em;
         cursor: pointer;
-        margin-left:  auto; /* Joga a lupa para a direita */
-        color: #070707; /* Corrigido para o tema escuro */
+        margin-left:  auto; 
+        color: #070707;
     }
 
     .user-actions {
-         /* Não briga com a lupa */
-        margin-left: auto; /* Corrigido o erro de digitação */
+     
+        margin-left: auto; 
     }
 
-    /* Ajuste do Layout para 1 coluna */
+  
     .layout-container {
         grid-template-columns: 1fr;
     }
     
-    /* Configuração da Sidebar como Menu Deslizante (Off-canvas) */
+   
     .sidebar {
         position: fixed;
         top: 0;
@@ -305,7 +506,7 @@ body {
         border: none;
         font-size: 1.2em;
         font-weight: bold;
-        color: #d4d0d0; /* Corrigido para o tema escuro */
+        color: #8a0009;
         cursor: pointer;
         margin-bottom: 20px;
         text-align: right;
@@ -330,4 +531,41 @@ body {
         opacity: 1;
         visibility: visible;
     }
+}
+
+/* =========================================
+   TEMA: FEET FUNNY (Claro/Amarelo)
+   ========================================= */
+
+
+body.FeetFunny {
+    background-color: #161616;
+    color: #161616;
+}
+
+
+body.FeetFunny .navbar {
+    background-color: #161616; /* Exemplo de cor diferente */
+    color: #f5f2f2;
+}
+
+body.FeetFunny .post-card, 
+body.FeetFunny .sidebar-widget, 
+body.FeetFunny .config-options,
+body.FeetFunny .search-results {
+    background-color: #161616;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .post-card,
+body.FeetFunny .post-time,
+body.FeetFunny .username,
+body.FeetFunny .post-header,
+body.FeetFunny .action-btn,
+body.FeetFunny .sidebar-widget,
+body.FeetFunny .trending-list li,
+body.FeetFunny .config-options,
+body.FeetFunny h3 {
+    color: #f5f2f2; 
 }

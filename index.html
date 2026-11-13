@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Base Clone - Feed</title>
+    <title>FeetBook</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- OVERLAY ESCURO PARA O MENU MOBILE -->
     <div class="menu-overlay" id="menuOverlay"></div>
+    <div class="black-overlay"></div>
 
     <header class="navbar">
         <div class="navbar-container">
@@ -39,6 +39,51 @@
         </div>
     </header>
 
+    <div class="config-options" id="configOptions">
+        <div class="config-sidebar">
+            <button class="close-config" id="closeConfig">✕</button>
+                    <ul>
+                        <li class="config-tab active" data-target="panel-tema">Alterar Tema</li>
+                        <li class="config-tab" data-target="panel-conta">Gerenciar Conta</li>
+                        <li class="config-tab" data-target="panel-notificacoes">Notificações</li>
+                    </ul>
+        </div>
+        
+        <div class="config-content">
+            
+            <div id="panel-tema" class="config-panel active">
+                <h2>Alterar Tema</h2>
+                <div class="theme-options">
+                     <input id="FeetChan" type="radio" name="tema" value="FeetChan" checked>
+                     <label for="FeetChan">
+                     <span class="title">FeetChan</span>
+                     <small><span class="description">Tema escuro com destaque vermelho</span></small>
+                    </label>
+
+                    <input id="FeetFunny" type="radio" name="tema" value="FeetFunny">
+                     <label for="FeetFunny">
+                     <span class="title">FeetFunny</span>
+                     <small><span class="description">Tema claro com destaque amarelo</span></small>
+                    </label>
+
+                </div>
+            </div>
+
+            <!-- Painel da Conta -->
+            <div id="panel-conta" class="config-panel">
+                <h2>Gerenciar Conta</h2>
+                <p></p>
+            </div>
+
+            <!-- Painel de Notificações -->
+            <div id="panel-notificacoes" class="config-panel">
+                <h2>Notificações</h2>
+                <p></p>
+            </div>
+
+        </div>
+    </div>
+
     <main class="layout-container">
         
         <section class="feed">
@@ -62,7 +107,7 @@
         <!-- SIDEBAR (Vira menu lateral no Mobile) -->
         <aside class="sidebar" id="mobileSidebar">
             <!-- Botão de fechar (Aparece só no mobile) -->
-            <button class="close-menu" id="closeMenu">✕ Fechar</button>
+            <button class="close-menu" id="closeMenu">✕</button>
 
             <div class="sidebar-widget">
                 <h3>Grupos</h3>
@@ -72,10 +117,14 @@
                     <li><img src="https://via.placeholder.com/40" alt="Avatar" class="avatar">Grupo 3</li>
                 </ul>
             </div>
+            <div class="sidebar-widget">
+                <h3 id="button-config">⚙️ Configurações</h3>
+            </div>
         </aside>
     </main>
 
-    <!-- Script de Toggle para o Menu Mobile -->
+    
     <script type="module" src="./script.js"></script>
 </body>
 </html>
+
