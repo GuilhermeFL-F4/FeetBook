@@ -1,5 +1,19 @@
-// pesquisa.js
-export default function TelaPesquisa() {
+export function MenuMobile() {
+const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const sidebar = document.getElementById('mobileSidebar');
+        const overlay = document.getElementById('menuOverlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        closeMenu.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);}
+
+export function TelaPesquisa() {
     const desktopTrigger = document.getElementById('desktopSearchTrigger');
     const mobileTrigger = document.getElementById('mobileSearchTrigger');
     const searchScreen = document.getElementById('searchScreen');

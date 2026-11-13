@@ -1,5 +1,4 @@
-import MenuMobile from './menumobile.js';
-import TelaPesquisa from './pesquisatela.js';
+import {MenuMobile, TelaPesquisa} from './interface.js';
 
 MenuMobile();
 TelaPesquisa();
