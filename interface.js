@@ -76,6 +76,7 @@ export function Configuracoes() {
 export function AlternarTema() {
     // 1. Pega todos os inputs de rádio que têm o nome "tema"
     const radiosTema = document.querySelectorAll('input[name="tema"]');
+    document.body.classList.add('FeetChan');
 
     // 2. Para cada botão de rádio...
     radiosTema.forEach(radio => {
