@@ -263,11 +263,11 @@ body.FeetChan {
     right: 10px;
 }
 
-/* Coloca as opções uma embaixo da outra */
+
 .theme-options {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* Espaço entre as opções */
+    gap: 15px;
     margin-top: 15px;
 }
 
@@ -277,10 +277,10 @@ body.FeetChan {
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    display: block; /* Faz a caixa ocupar a largura inteira */
+    display: block; 
     box-sizing: border-box;
     text-align: left;
-    box-shadow: 0 0 0 1px #d8dee4; /* Borda cinza clarinha padrão */
+    box-shadow: 0 0 0 1px #d8dee4; 
     transition: all 0.2s ease;
 }
 
@@ -288,7 +288,7 @@ body.FeetChan {
     background: #f5f6f8;
 }
 
-/* Esconde a bolinha padrão do input de radio, mas mantém ele clicável */
+
 .theme-options input {
     clip: rect(0, 0, 0, 0);
     border-width: 0;
@@ -301,10 +301,9 @@ body.FeetChan {
     width: 1px;
 }
 
-/* A CORREÇÃO MÁGICA: Trocamos o ~ pelo + (Adjacent Sibling) */
-/* Agora ele pinta APENAS o label que vem imediatamente ao lado do input marcado */
+
 .theme-options input:checked + label {
-    box-shadow: 0 0 0 2px #8a0009; /* Borda mais grossa vermelha */
+    box-shadow: 0 0 0 2px #8a0009; 
     color: #8a0009;
 }
 
@@ -317,10 +316,10 @@ body.FeetChan {
     margin-bottom: 5px;
     display: block;
     font-size: 16px;
-    color: #1b1b1b; /* Garante que o texto fique escuro pra ler melhor */
+    color: #1b1b1b; 
 }
 
-/* Quando selecionado, o título também fica da cor do tema */
+
 .theme-options input:checked + label .title {
     color: #8a0009; 
 }
@@ -342,13 +341,13 @@ body.FeetChan {
 .search-bar,
 .btn-upload,
 .btn-login {
-    /* 1. Linha grossa e cor forte (como o lápis do Paint) */
+ 
     border: 4px solid #0a0001; 
     
-    /* 2. O TRUQUE MAGNÍFICO: Deforma os 4 cantos de forma irregular */
+
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
     
-    /* 3. Sombra dura sem desfoque para dar o visual 8-bit/Pixel Art */
+
     box-shadow: 4px 4px 0px #1b1b1b;
 }
 
@@ -437,6 +436,155 @@ body.FeetChan {
     font-size: 1em;
 }
 
+
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* =========================================
+   POST + CHAT FIXOS (DESKTOP)
+   ========================================= */
+.post-wrapper {
+    display: block;
+}
+
+.post-wrapper.chat-open {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92vw;
+    max-width: 1050px;
+    height: 82vh;
+    max-height: 700px;
+    z-index: 2600;
+    
+    display: grid;
+    grid-template-columns: 1.35fr 350px;
+    gap: 16px;
+}
+
+.post-wrapper.chat-open .post-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+.post-wrapper.chat-open .post-content {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.post-wrapper.chat-open .post-content .post-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.chat-panel {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    background-color: #ffffff;
+    color: #8a0009;
+    overflow: hidden;
+
+
+    border: 4px solid #0a0001;
+    border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
+    box-shadow: 4px 4px 0px #1b1b1b;
+}
+
+.chat-panel.active {
+    display: flex;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 2px solid #f0f0f0;
+    font-weight: bold;
+}
+
+.close-chat {
+    background: none;
+    border: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9em;
+}
+
+.chat-msg {
+    background-color: #f5f5f5;
+    padding: 8px 12px;
+    border-radius: 8px;
+    word-break: break-word;
+}
+
+.chat-form {
+    display: flex;
+    padding: 10px;
+    gap: 8px;
+    border-top: 2px solid #f0f0f0;
+}
+
+.chat-form input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 2px solid #0a0001;
+    border-radius: 15px;
+    outline: none;
+}
+
+.chat-form button {
+    padding: 8px 14px;
+    background-color: #8a0009;
+    color: #ffffff;
+    border: 2px solid #0a0001;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+
+body.FeetFunny .chat-panel {
+    background-color: #161616;
+    color: #f5f2f2;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .chat-msg {
+    background-color: #262626;
+    color: #f5f2f2;
+}
+
+body.FeetFunny .chat-form button {
+    background-color: #faed35;
+    color: #161616;
+}
 
 /* =========================================
    RESPONSIVIDADE (CELULARES)
@@ -531,32 +679,102 @@ body.FeetChan {
         opacity: 1;
         visibility: visible;
     }
+
+
+    .post-wrapper.chat-open {
+        top: 0;
+        left: 0;
+        transform: none;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh; 
+        max-width: none;
+        max-height: none;
+        
+        grid-template-columns: 1fr;
+        grid-template-rows: 50% 50%; 
+        gap: 0;
+    }
+
+    .post-wrapper.chat-open .post-card {
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        box-shadow: none;
+    }
+
+   
+    .post-wrapper.chat-open .post-header {
+        padding: 8px 12px;
+    }
+
+    .post-wrapper.chat-open .post-header .avatar {
+        width: 36px;
+        height: 36px;
+    }
+
+    .post-wrapper.chat-open .post-actions {
+        padding: 6px 12px;
+    }
+
+    .post-wrapper.chat-open .chat-panel {
+        border-radius: 16px 16px 0 0;
+        border-left: none;
+        border-right: none;
+        border-bottom: none;
+        box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+    }
+
+   
+    body.mobile-chat-open {
+        padding-bottom: 52vh;
+    }
 }
 
 /* =========================================
-   TEMA: FEET FUNNY (Claro/Amarelo)
+   TEMA: FEET FUNNY (Escuro/Amarelo)
    ========================================= */
-
 
 body.FeetFunny {
     background-color: #161616;
-    color: #161616;
+    color: #f5f2f2;
 }
 
 
-body.FeetFunny .navbar {
-    background-color: #161616; /* Exemplo de cor diferente */
+body.FeetFunny .navbar,
+body.FeetFunny .search-screen-header {
+    background-color: #161616;
     color: #f5f2f2;
+    border-bottom: 2px solid #faed35;
+}
+
+body.FeetFunny .search-screen {
+    background-color: #161616;
+}
+
+body.FeetFunny .search-results {
+    background-color: #161616;
+    background-image: none; 
+    color: #f5f2f2;
+}
+
+
+body.FeetFunny .search-screen-header input {
+    background-color: #262626;
+    color: #f5f2f2;
+    border: 2px solid #faed35;
 }
 
 body.FeetFunny .post-card, 
 body.FeetFunny .sidebar-widget, 
 body.FeetFunny .config-options,
-body.FeetFunny .search-results {
+body.FeetFunny .sidebar{
     background-color: #161616;
     border-color: #faed35;
     box-shadow: 4px 4px 0px #faed35;
 }
+
 
 body.FeetFunny .post-card,
 body.FeetFunny .post-time,

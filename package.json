@@ -1,0 +1,25 @@
+{
+  "name": "feetbook",
+  "version": "1.0.0",
+  "main": "interface.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon supabase.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuilhermeFL-F4/FeetBook.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuilhermeFL-F4/FeetBook/issues"
+  },
+  "homepage": "https://github.com/GuilhermeFL-F4/FeetBook#readme",
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.119.0",
+    "nodemon": "^3.1.14"
+  }
+}

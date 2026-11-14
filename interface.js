@@ -74,25 +74,87 @@ export function Configuracoes() {
 }
 
 export function AlternarTema() {
-    // 1. Pega todos os inputs de rádio que têm o nome "tema"
+    
     const radiosTema = document.querySelectorAll('input[name="tema"]');
     document.body.classList.add('FeetChan');
 
-    // 2. Para cada botão de rádio...
+  
     radiosTema.forEach(radio => {
-        // 3. Fica de olho no evento 'change' (quando a seleção muda)
+      
         radio.addEventListener('change', (evento) => {
             
-            // Pega o valor (value) do botão que acabou de ser clicado
+         
             const temaEscolhido = evento.target.value; 
 
-            // Remove todos os temas antigos do body para não dar conflito
+        
             document.body.classList.remove('FeetChan', 'FeetFunny');
 
-            // Adiciona a classe do novo tema no body
+          
             document.body.classList.add(temaEscolhido);
             
-            console.log("Tema alterado para:", temaEscolhido); // Só para você ver funcionando no console!
+            console.log("Tema alterado para:", temaEscolhido); 
         });
     });
+}
+
+export function ChatComentarios() {
+    const postWrappers = document.querySelectorAll('.post-wrapper');
+    const overlay = document.querySelector('.black-overlay');
+
+    function fecharTodosChats() {
+        document.querySelectorAll('.chat-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.post-wrapper').forEach(w => w.classList.remove('chat-open'));
+        document.body.classList.remove('no-scroll');
+        if (overlay) overlay.classList.remove('active');
+    }
+
+    postWrappers.forEach(wrapper => {
+        const btnComment = wrapper.querySelector('.btn-comment');
+        const chatPanel = wrapper.querySelector('.chat-panel');
+        const closeChat = wrapper.querySelector('.close-chat');
+        const chatForm = wrapper.querySelector('.chat-form');
+        const chatInput = wrapper.querySelector('.chat-form input');
+        const chatMessages = wrapper.querySelector('.chat-messages');
+
+        if (!btnComment || !chatPanel) return;
+
+        // Abrir post + chat fixos
+        btnComment.addEventListener('click', () => {
+            fecharTodosChats();
+
+            wrapper.classList.add('chat-open');
+            chatPanel.classList.add('active');
+            document.body.classList.add('no-scroll');
+            if (overlay) overlay.classList.add('active');
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        });
+
+        // Fechar pelo botão X
+        if (closeChat) {
+            closeChat.addEventListener('click', fecharTodosChats);
+        }
+
+        // Enviar mensagem no chat
+        if (chatForm) {
+            chatForm.addEventListener('submit', (evento) => {
+                evento.preventDefault();
+                const texto = chatInput.value.trim();
+                if (!texto) return;
+
+                const novaMsg = document.createElement('div');
+                novaMsg.classList.add('chat-msg');
+                novaMsg.innerHTML = `<strong>Você:</strong> ${texto}`;
+                chatMessages.appendChild(novaMsg);
+
+                chatInput.value = '';
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+        }
+    });
+
+    // Fechar também ao clicar fora (no fundo escuro) no PC
+    if (overlay) {
+        overlay.addEventListener('click', fecharTodosChats);
+    }
 }

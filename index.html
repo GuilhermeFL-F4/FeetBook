@@ -87,22 +87,43 @@
     <main class="layout-container">
         
         <section class="feed">
-            <!-- Modelo de Post -->
-            <article class="post-card">
-                <header class="post-header">
-                    <img src="https://via.placeholder.com/60" alt="Avatar" class="avatar">
-                    <span class="username">NomeDoUsuario</span>
-                    <span class="post-time">há 2 horas</span>
-                </header>
-                <div class="post-content">
-                    <img src="https://via.placeholder.com/1080x720" alt="Conteúdo do post" class="post-image">
+    <div class="post-wrapper">
+        
+        <article class="post-card">
+            <header class="post-header">
+                <img src="https://via.placeholder.com/60" alt="Avatar" class="avatar">
+                <span class="username">NomeDoUsuario</span>
+                <span class="post-time">há 2 horas</span>
+            </header>
+            <div class="post-content">
+                <img src="https://via.placeholder.com/1080x720" alt="Conteúdo do post" class="post-image">
+            </div>
+            <footer class="post-actions">
+                <button class="action-btn">👍 Curtir</button>
+                <button class="action-btn btn-comment">💬 Comentar</button>
+            </footer>
+        </article>
+
+        <aside class="chat-panel">
+            <header class="chat-header">
+                <span>💬 Comentarios</span>
+                <button class="close-chat">✕</button>
+            </header>
+
+            <div class="chat-messages">
+                <div class="chat-msg">
+                    <strong>Usuario1:</strong> Que post daora!
                 </div>
-                <footer class="post-actions">
-                    <button class="action-btn">👍 Curtir</button>
-                    <button class="action-btn">💬 Comentar</button>
-                </footer>
-            </article>
-        </section>
+            </div>
+
+            <form class="chat-form">
+                <input type="text" placeholder="Digite no chat..." required autocomplete="off">
+                <button type="submit">➤</button>
+            </form>
+        </aside>
+
+    </div>
+</section>
 
         <!-- SIDEBAR (Vira menu lateral no Mobile) -->
         <aside class="sidebar" id="mobileSidebar">
