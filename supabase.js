@@ -1,16 +1,6 @@
-const express = require('express');
-const { createClient } = require('@supabase/supabase-js');
-require('dotenv').config();
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
+const SUPABASE_URL = 'https://bpqqrvflpgrzudkizjkt.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJwcXFydmZscGdyenVka2l6amt0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1NjE1NTksImV4cCI6MjExMDEzNzU1OX0.L3hz9fW6UEpr-3s92dXNOZqRJZu4YY_xDzrLi6iY2PE';
 
-const app = express();
-app.use(express.json());
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-const port = 3000;
-
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

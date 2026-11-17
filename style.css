@@ -340,14 +340,12 @@ body.FeetChan {
 .config-options,
 .search-bar,
 .btn-upload,
-.btn-login {
- 
+.btn-login,
+.auth-modal,
+.upload-modal,
+.group-header-card {
     border: 4px solid #0a0001; 
-    
-
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
-    
-
     box-shadow: 4px 4px 0px #1b1b1b;
 }
 
@@ -586,6 +584,340 @@ body.FeetFunny .chat-form button {
     color: #161616;
 }
 
+ /* =========================================
+   TELA DE LOGIN / CADASTRO
+   ========================================= */
+.auth-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 92vw;
+    background-color: #ffffff;
+    color: #8a0009;
+    padding: 25px;
+    z-index: 3000;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.auth-modal.active {
+    display: flex;
+}
+
+.close-auth {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    color: inherit;
+}
+
+.auth-tabs {
+    display: flex;
+    gap: 10px;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 12px;
+    margin-top: 10px;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 8px;
+    background: none;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    color: inherit;
+    transition: 0.2s;
+}
+
+.auth-tab.active {
+    background-color: #ffccae;
+    border-color: #0a0001;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.auth-form h2 {
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.input-group.hidden {
+    display: none;
+}
+
+.input-group label {
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+.input-group input {
+    padding: 10px 12px;
+    border: 2px solid #0a0001;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+}
+
+.auth-feedback {
+    font-size: 0.85em;
+    min-height: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.auth-submit {
+    padding: 12px;
+    background-color: #8a0009;
+    color: #ffffff;
+    border: 3px solid #0a0001;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #1b1b1b;
+    transition: transform 0.1s;
+}
+
+.auth-submit:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #1b1b1b;
+}
+
+/* =========================================
+   TELA DE ADICIONAR POST
+   ========================================= */
+.upload-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 460px;
+    max-width: 92vw;
+    max-height: 88dvh;
+    overflow-y: auto;
+    background-color: #ffffff;
+    color: #8a0009;
+    padding: 25px;
+    z-index: 3000;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.upload-modal.active {
+    display: flex;
+}
+
+.close-upload {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    color: inherit;
+}
+
+.upload-modal h2 {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.upload-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Esconde o input nativo feio e usa o label como área clicável */
+.upload-form input[type="file"] {
+    display: none;
+}
+
+.upload-dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+    padding: 15px;
+    border: 3px dashed #8a0009;
+    border-radius: 12px;
+    background-color: #fff6f1;
+    cursor: pointer;
+    text-align: center;
+    font-weight: bold;
+    transition: background 0.2s;
+}
+
+.upload-dropzone:hover {
+    background-color: #ffccae;
+}
+
+.image-preview {
+    max-width: 100%;
+    max-height: 260px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #000;
+}
+
+.image-preview.hidden,
+#dropzoneText.hidden {
+    display: none;
+}
+
+.upload-form select {
+    padding: 10px 12px;
+    border: 2px solid #0a0001;
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: #ffffff;
+    color: inherit;
+    outline: none;
+}
+
+.upload-feedback {
+    font-size: 0.85em;
+    min-height: 18px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.upload-submit {
+    padding: 12px;
+    background-color: #8a0009;
+    color: #ffffff;
+    border: 3px solid #0a0001;
+    border-radius: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #1b1b1b;
+    transition: transform 0.1s;
+}
+
+.upload-submit:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0px #1b1b1b;
+}
+
+/* =========================================
+   CABEÇALHO DE GRUPO
+   ========================================= */
+.logo {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.3em;
+}
+
+.trending-list li.group-item {
+    cursor: pointer;
+    padding: 8px 6px;
+    border-radius: 6px;
+    transition: background 0.2s;
+}
+
+.trending-list li.group-item:hover,
+.trending-list li.group-item.active {
+    background-color: #ffccae;
+    font-weight: bold;
+}
+
+.group-header-card {
+    background-color: #ffffff;
+    color: #8a0009;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.group-header-card.hidden {
+    display: none;
+}
+
+.group-banner {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    background-color: #8a0009;
+}
+
+.group-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.btn-back-feed {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    padding: 6px 12px;
+    background-color: #ffffff;
+    color: #8a0009;
+    border: 3px solid #0a0001;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 2px 2px 0px #1b1b1b;
+}
+
+.group-info {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    padding: 0 20px 20px 20px;
+    margin-top: -40px; /* Faz o ícone sobrepor a borda do banner */
+    position: relative;
+    z-index: 2;
+}
+
+.group-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid #0a0001;
+    background-color: #ffffff;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.group-details {
+    padding-top: 44px;
+}
+
+.group-details h2 {
+    font-size: 1.4em;
+    margin-bottom: 4px;
+}
+
+.group-details p {
+    font-size: 0.9em;
+    opacity: 0.85;
+}
+
 /* =========================================
    RESPONSIVIDADE (CELULARES)
    ========================================= */
@@ -730,6 +1062,65 @@ body.FeetFunny .chat-form button {
     body.mobile-chat-open {
         padding-bottom: 52vh;
     }
+
+    .group-banner {
+        height: 120px;
+    }
+
+    .group-icon {
+        width: 64px;
+        height: 64px;
+    }
+
+    .group-info {
+        margin-top: -32px;
+    }
+
+    .group-details {
+        padding-top: 36px;
+    }
+
+   
+    /* =========================================
+       TELA DE CONFIGURAÇÕES RESPONSIVA (MOBILE)
+       ========================================= */
+    .config-options.active {
+        display: flex;
+        flex-direction: column;
+        width: 92vw;
+        height: 80vh;
+        max-height: 85dvh;
+        padding: 15px;
+        overflow: hidden;
+    }
+
+    /* Troca a linha lateral por uma linha horizontal abaixo das abas */
+    .config-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #ddd;
+        padding: 28px 4px 12px 4px; /* Espaço no topo para o botão X não cobrir as abas */
+    }
+
+    /* Coloca as opções do menu lado a lado no topo */
+    .config-sidebar ul {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .config-sidebar .config-tab {
+        padding: 8px 12px;
+        margin-bottom: 0;
+        font-size: 0.9em;
+    }
+
+    /* Permite rolar apenas o conteúdo interno se houver muitas opções */
+    .config-content {
+        flex: 1;
+        padding: 15px 4px;
+        overflow-y: auto;
+    }
 }
 
 /* =========================================
@@ -786,4 +1177,117 @@ body.FeetFunny .trending-list li,
 body.FeetFunny .config-options,
 body.FeetFunny h3 {
     color: #f5f2f2; 
+}
+
+/* Modal de Login no Tema FeetFunny */
+body.FeetFunny .auth-modal {
+    background-color: #161616;
+    color: #f5f2f2;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .auth-tab.active {
+    background-color: #262626;
+    border-color: #faed35;
+    color: #faed35;
+}
+
+body.FeetFunny .input-group input {
+    background-color: #262626;
+    color: #f5f2f2;
+    border-color: #faed35;
+}
+
+body.FeetFunny .auth-submit {
+    background-color: #faed35;
+    color: #161616;
+    border-color: #0a0001;
+}
+
+/* Modal de Upload no Tema FeetFunny */
+body.FeetFunny .upload-modal {
+    background-color: #161616;
+    color: #f5f2f2;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .upload-dropzone {
+    background-color: #262626;
+    border-color: #faed35;
+    color: #faed35;
+}
+
+body.FeetFunny .upload-form select {
+    background-color: #262626;
+    color: #f5f2f2;
+    border-color: #faed35;
+}
+
+body.FeetFunny .upload-submit {
+    background-color: #faed35;
+    color: #161616;
+    border-color: #0a0001;
+}
+
+/* Cabeçalho de Grupo no Tema FeetFunny */
+body.FeetFunny .group-header-card {
+    background-color: #161616;
+    color: #f5f2f2;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .group-icon,
+body.FeetFunny .btn-back-feed {
+    border-color: #faed35;
+}
+
+body.FeetFunny .btn-back-feed {
+    background-color: #161616;
+    color: #faed35;
+}
+
+body.FeetFunny .trending-list li.group-item:hover,
+body.FeetFunny .trending-list li.group-item.active {
+    background-color: #262626;
+    color: #faed35;
+}
+
+/* =========================================
+   CONTROLES DE GRUPO, CURTIDAS E CONTA
+   ========================================= */
+.btn-join-group {
+    margin-left: auto;
+    padding: 8px 14px;
+    background-color: #8a0009;
+    color: #ffffff;
+    border: 3px solid #0a0001;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #1b1b1b;
+    flex-shrink: 0;
+}
+
+.btn-join-group.joined {
+    background-color: #ffccae;
+    color: #8a0009;
+}
+
+.action-btn.liked {
+    font-weight: bold;
+    transform: scale(1.05);
+}
+
+body.FeetFunny .btn-join-group {
+    background-color: #faed35;
+    color: #161616;
+}
+
+body.FeetFunny .btn-join-group.joined {
+    background-color: #262626;
+    color: #faed35;
+    border-color: #faed35;
 }
