@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FeetBook</title>
+    <link rel="icon" type="image/png" href="./img/feet.png">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -15,11 +16,14 @@
         <div class="navbar-container">
             <button class="hamburger-menu" id="menuToggle">☰</button>
             
-            <div class="logo" id="logoHome">FeetBook</div>
+            <div class="logo" id="logoHome">
+                <img src="./img/feet.png" alt="Logo FeetBook" class="logo-icon">
+                <span>FeetBook</span>
+            </div>
             <div class="search-bar">
                 <input type="text" placeholder="Buscar grupos ou usuários..." id="desktopSearchTrigger" readonly>
             </div>
-            <button class="mobile-search-icon" id="mobileSearchTrigger">🔍</button>
+            <button class="mobile-search-icon" id="mobileSearchTrigger"><img src="./img/lupa.png" alt="Configurações" class="ui-icon"></button>
 
             <div class="search-screen" id="searchScreen">
                 <div class="search-screen-header">
@@ -30,6 +34,7 @@
             </div>
 
             <div class="user-actions">
+                <button class="btn-create-group" id="btnOpenCreateGroup">+ Grupo</button>
                 <button class="btn-upload">+ Post</button>
                 <button class="btn-login" id="btnAuthAction">Entrar</button>
             </div>
@@ -43,7 +48,7 @@
 
         <form class="upload-form" id="uploadForm">
             <label for="postImageInput" class="upload-dropzone" id="uploadDropzone">
-                <span id="dropzoneText">🖼️ Clique para selecionar uma imagem</span>
+                <span id="dropzoneText">Clique para selecionar uma imagem</span>
                 <img id="imagePreview" class="image-preview hidden" alt="Pré-visualização do post">
             </label>
             <input type="file" id="postImageInput" accept="image/*" required>
@@ -57,6 +62,41 @@
 
             <p class="upload-feedback" id="uploadFeedback"></p>
             <button type="submit" class="upload-submit" id="uploadSubmitBtn">Publicar</button>
+        </form>
+    </div>
+
+    <!-- CRIAR / EDITAR GRUPO -->
+    <div class="create-group-modal" id="createGroupModal">
+        <button class="close-create-group" id="closeCreateGroup">✕</button>
+        <h2 id="createGroupModalTitle">Criar Novo Grupo</h2>
+
+        <form class="upload-form" id="createGroupForm">
+            <div class="input-group">
+                <label for="groupNameInput">Nome do Grupo</label>
+                <input type="text" id="groupNameInput" placeholder="Ex: Memes de Programação" required maxlength="40" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="groupDescInput">Descrição</label>
+                <textarea id="groupDescInput" rows="2" placeholder="Sobre o que é esse grupo?" maxlength="160"></textarea>
+            </div>
+
+            <!-- Seleção do Banner -->
+            <label for="groupBannerInput" class="upload-dropzone group-dropzone">
+                <span id="bannerDropText">Escolher imagem do Banner</span>
+                <img id="bannerPreview" class="group-banner-preview hidden" alt="Prévia do banner">
+            </label>
+            <input type="file" id="groupBannerInput" accept="image/*" required>
+
+            <!-- Seleção da Foto de Perfil (Ícone) -->
+            <label for="groupIconInput" class="upload-dropzone group-dropzone">
+                <span id="iconDropText">Escolher foto de perfil do grupo</span>
+                <img id="iconPreview" class="group-icon-preview hidden" alt="Prévia do ícone">
+            </label>
+            <input type="file" id="groupIconInput" accept="image/*" required>
+
+            <p class="upload-feedback" id="createGroupFeedback"></p>
+            <button type="submit" class="upload-submit" id="createGroupSubmitBtn">Criar Grupo</button>
         </form>
     </div>
 
@@ -148,7 +188,10 @@
                         <h2 id="groupTitle">Nome do Grupo</h2>
                         <p id="groupDescription">Descrição do grupo aparece aqui.</p>
                     </div>
-                    <button type="button" class="btn-join-group" id="btnJoinGroup">Entrar no Grupo</button>
+                    <div class="group-header-actions">
+                        <button type="button" class="btn-edit-group hidden" id="btnEditGroup">Editar</button>
+                        <button type="button" class="btn-join-group" id="btnJoinGroup">Entrar no Grupo</button>
+                    </div>
                 </div>
             </div>
 
@@ -166,8 +209,11 @@
                     <!-- Preenchido automaticamente pelo Supabase -->
                 </ul>
             </div>
-            <div class="sidebar-widget">
-                <h3 id="button-config">⚙️ Configurações</h3>
+          <div class="sidebar-widget">
+                <h3 id="button-config">
+                    <img src="./img/eng.png" alt="" class="ui-icon">
+                    <span>Configurações</span>
+                </h3>
             </div>
         </aside>
     </main>

@@ -1,4 +1,4 @@
-import {MenuMobile, TelaPesquisa, Configuracoes, AlternarTema, ChatComentarios, TelaLogin, TelaUpload, TelaGrupos} from './interface.js';
+import {MenuMobile, TelaPesquisa, Configuracoes, AlternarTema, ChatComentarios, TelaLogin, TelaUpload, TelaGrupos, TelaCriarGrupo} from './interface.js';
 
 MenuMobile();
 TelaPesquisa();
@@ -8,3 +8,4 @@ ChatComentarios();
 TelaLogin();
 TelaUpload();
 TelaGrupos();
+TelaCriarGrupo();

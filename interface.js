@@ -4,6 +4,7 @@ import { supabase } from './supabase.js';
 let usuarioAtual = null;
 let perfilAtual = null;
 let grupoAtivoId = null;
+let grupoAtualObj = null;
 let meusGrupos = [];
 let canalRealtimeAtual = null;
 
@@ -31,7 +32,7 @@ function fecharTodosModais() {
     document.querySelectorAll('.post-wrapper').forEach(w => w.classList.remove('chat-open'));
     document.body.classList.remove('no-scroll');
 
-    ['configOptions', 'authModal', 'uploadModal'].forEach(id => {
+    ['configOptions', 'authModal', 'uploadModal', 'createGroupModal'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.remove('active');
     });
@@ -508,8 +509,13 @@ export async function carregarFeed(groupId = null) {
         return;
     }
 
+    // Esconde esse post específico apenas no feed principal
+    const postsVisiveis = groupId
+        ? posts
+        : (posts || []).filter(p => p.id !== '47c3cd9c-f011-4afb-99ee-295fa0712e9d');
+
     let curtidosPeloUsuario = new Set();
-    if (usuarioAtual && posts?.length) {
+    if (usuarioAtual && postsVisiveis?.length) {
         const { data: likes } = await supabase
             .from('post_likes')
             .select('post_id')
@@ -520,12 +526,12 @@ export async function carregarFeed(groupId = null) {
 
     feedPosts.innerHTML = '';
 
-    if (!posts || posts.length === 0) {
+    if (!postsVisiveis || postsVisiveis.length === 0) {
         feedPosts.innerHTML = '<p style="text-align:center; padding:20px;">Nenhum post encontrado aqui ainda. Seja o primeiro a postar!</p>';
         return;
     }
 
-    posts.forEach(post => {
+    postsVisiveis.forEach(post => {
         const jaCurtiu = curtidosPeloUsuario.has(post.id);
         const wrapper = document.createElement('div');
         wrapper.classList.add('post-wrapper');
@@ -545,15 +551,22 @@ export async function carregarFeed(groupId = null) {
                 </div>
                 <footer class="post-actions">
                     <button class="action-btn btn-like ${jaCurtiu ? 'liked' : ''}">
-                        👍 <span class="like-count">${post.likes_count}</span>
+                        <img src="./img/FeetIcon.jpg" alt="" class="ui-icon">
+                        <span class="like-count">${post.likes_count}</span>
                     </button>
-                    <button class="action-btn btn-comment">💬 Comentar</button>
+                    <button class="action-btn btn-comment">
+                        <img src="./img/chat.png" alt="" class="ui-icon">
+                        <span>Comentar</span>
+                    </button>
                 </footer>
             </article>
 
             <aside class="chat-panel">
                 <header class="chat-header">
-                    <span>💬 Comentários</span>
+                    <span style="display: flex; align-items: center; gap: 6px;">
+                        <img src="./img/feet.png" alt="" class="ui-icon">
+                        <span>Comentários</span>
+                    </span>
                     <button class="close-chat">✕</button>
                 </header>
                 <div class="chat-messages"></div>
@@ -744,6 +757,293 @@ async function carregarMeusGrupos() {
     }
 }
 
+export async function TelaGrupos() {
+    const groupHeader = document.getElementById('groupHeader');
+    const logoHome = document.getElementById('logoHome');
+    const btnJoinGroup = document.getElementById('btnJoinGroup');
+
+    if (btnJoinGroup) {
+        btnJoinGroup.addEventListener('click', async () => {
+            if (!usuarioAtual) {
+                document.getElementById('btnAuthAction')?.click();
+                return;
+            }
+            if (!grupoAtivoId) return;
+
+            const jaEhMembro = btnJoinGroup.classList.contains('joined');
+            if (jaEhMembro) {
+                await supabase
+                    .from('group_members')
+                    .delete()
+                    .match({ user_id: usuarioAtual.id, group_id: grupoAtivoId });
+            } else {
+                await supabase
+                    .from('group_members')
+                    .insert({ user_id: usuarioAtual.id, group_id: grupoAtivoId });
+            }
+
+            await carregarMeusGrupos();
+            abrirGrupoPorId(grupoAtivoId);
+        });
+    }
+
+    if (logoHome) {
+        logoHome.addEventListener('click', () => {
+            grupoAtivoId = null;
+            grupoAtualObj = null;
+            groupHeader?.classList.add('hidden');
+            document.querySelectorAll('#groupsList .group-item').forEach(i => i.classList.remove('active'));
+            carregarFeed(null);
+        });
+    }
+
+    await carregarMeusGrupos();
+    carregarFeed(null);
+}
+
+// =========================================
+// CRIAR E EDITAR GRUPO (STORAGE + DB)
+// =========================================
+export function TelaCriarGrupo() {
+    const btnOpen = document.getElementById('btnOpenCreateGroup');
+    const btnEdit = document.getElementById('btnEditGroup');
+    const modal = document.getElementById('createGroupModal');
+    const modalTitle = document.getElementById('createGroupModalTitle');
+    const btnClose = document.getElementById('closeCreateGroup');
+    const overlay = document.querySelector('.black-overlay');
+
+    const form = document.getElementById('createGroupForm');
+    const nameInput = document.getElementById('groupNameInput');
+    const descInput = document.getElementById('groupDescInput');
+    const bannerInput = document.getElementById('groupBannerInput');
+    const iconInput = document.getElementById('groupIconInput');
+
+    const bannerPreview = document.getElementById('bannerPreview');
+    const bannerDropText = document.getElementById('bannerDropText');
+    const iconPreview = document.getElementById('iconPreview');
+    const iconDropText = document.getElementById('iconDropText');
+
+    const feedback = document.getElementById('createGroupFeedback');
+    const submitBtn = document.getElementById('createGroupSubmitBtn');
+
+    if (!modal) return;
+
+    let bannerPreviewUrl = null;
+    let iconPreviewUrl = null;
+    let grupoEmEdicao = null;
+
+    function limparFormularioGrupo() {
+        form.reset();
+        feedback.textContent = '';
+        grupoEmEdicao = null;
+
+        bannerPreview.classList.add('hidden');
+        bannerPreview.src = '';
+        bannerDropText.classList.remove('hidden');
+
+        iconPreview.classList.add('hidden');
+        iconPreview.src = '';
+        iconDropText.classList.remove('hidden');
+
+        if (bannerPreviewUrl) {
+            URL.revokeObjectURL(bannerPreviewUrl);
+            bannerPreviewUrl = null;
+        }
+        if (iconPreviewUrl) {
+            URL.revokeObjectURL(iconPreviewUrl);
+            iconPreviewUrl = null;
+        }
+    }
+
+    // Abrir no modo CRIAÇÃO
+    if (btnOpen) {
+        btnOpen.addEventListener('click', () => {
+            if (!usuarioAtual) {
+                document.getElementById('btnAuthAction')?.click();
+                return;
+            }
+            limparFormularioGrupo();
+            if (modalTitle) modalTitle.textContent = 'Criar Novo Grupo';
+            submitBtn.textContent = 'Criar Grupo';
+            bannerInput.required = true;
+            iconInput.required = true;
+
+            modal.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+        });
+    }
+
+    // Abrir no modo EDIÇÃO
+    if (btnEdit) {
+        btnEdit.addEventListener('click', () => {
+            if (!usuarioAtual || !grupoAtualObj) return;
+            limparFormularioGrupo();
+
+            grupoEmEdicao = grupoAtualObj;
+            if (modalTitle) modalTitle.textContent = 'Editar Grupo';
+            submitBtn.textContent = 'Salvar Alterações';
+
+            bannerInput.required = false;
+            iconInput.required = false;
+
+            nameInput.value = grupoEmEdicao.name;
+            descInput.value = grupoEmEdicao.description || '';
+
+            bannerPreview.src = grupoEmEdicao.banner_url;
+            bannerPreview.classList.remove('hidden');
+            bannerDropText.classList.add('hidden');
+
+            iconPreview.src = grupoEmEdicao.icon_url;
+            iconPreview.classList.remove('hidden');
+            iconDropText.classList.add('hidden');
+
+            modal.classList.add('active');
+            if (overlay) overlay.classList.add('active');
+        });
+    }
+
+    if (btnClose) {
+        btnClose.addEventListener('click', () => {
+            limparFormularioGrupo();
+            fecharTodosModais();
+        });
+    }
+
+    if (bannerInput) {
+        bannerInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (bannerPreviewUrl) URL.revokeObjectURL(bannerPreviewUrl);
+            bannerPreviewUrl = URL.createObjectURL(file);
+            bannerPreview.src = bannerPreviewUrl;
+            bannerPreview.classList.remove('hidden');
+            bannerDropText.classList.add('hidden');
+        });
+    }
+
+    if (iconInput) {
+        iconInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (iconPreviewUrl) URL.revokeObjectURL(iconPreviewUrl);
+            iconPreviewUrl = URL.createObjectURL(file);
+            iconPreview.src = iconPreviewUrl;
+            iconPreview.classList.remove('hidden');
+            iconDropText.classList.add('hidden');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!usuarioAtual) return;
+
+            const nome = nameInput.value.trim();
+            const descricao = descInput.value.trim();
+            const bannerFile = bannerInput.files[0];
+            const iconFile = iconInput.files[0];
+
+            if (!nome) return;
+            if (!grupoEmEdicao && (!bannerFile || !iconFile)) return;
+
+            submitBtn.disabled = true;
+            const timestamp = Date.now();
+
+            let bannerUrlFinal = grupoEmEdicao ? grupoEmEdicao.banner_url : '';
+            let iconUrlFinal = grupoEmEdicao ? grupoEmEdicao.icon_url : '';
+
+            if (bannerFile) {
+                feedback.textContent = 'Enviando novo banner...';
+                const bannerExt = bannerFile.name.split('.').pop();
+                const bannerPath = `${usuarioAtual.id}/banner_${timestamp}.${bannerExt}`;
+                const { error } = await supabase.storage.from('groups').upload(bannerPath, bannerFile);
+                if (error) {
+                    feedback.textContent = 'Erro no banner: ' + error.message;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                bannerUrlFinal = supabase.storage.from('groups').getPublicUrl(bannerPath).data.publicUrl;
+            }
+
+            if (iconFile) {
+                feedback.textContent = 'Enviando nova foto do grupo...';
+                const iconExt = iconFile.name.split('.').pop();
+                const iconPath = `${usuarioAtual.id}/icon_${timestamp}.${iconExt}`;
+                const { error } = await supabase.storage.from('groups').upload(iconPath, iconFile);
+                if (error) {
+                    feedback.textContent = 'Erro no ícone: ' + error.message;
+                    submitBtn.disabled = false;
+                    return;
+                }
+                iconUrlFinal = supabase.storage.from('groups').getPublicUrl(iconPath).data.publicUrl;
+            }
+
+            if (grupoEmEdicao) {
+                feedback.textContent = 'Salvando alterações...';
+                const idEditado = grupoEmEdicao.id;
+
+                const { error: updateError } = await supabase
+                    .from('groups')
+                    .update({
+                        name: nome,
+                        description: descricao,
+                        banner_url: bannerUrlFinal,
+                        icon_url: iconUrlFinal
+                    })
+                    .eq('id', idEditado);
+
+                submitBtn.disabled = false;
+
+                if (updateError) {
+                    feedback.textContent = updateError.code === '23505'
+                        ? 'Já existe um grupo com esse nome.'
+                        : 'Erro ao editar grupo: ' + updateError.message;
+                    return;
+                }
+
+                limparFormularioGrupo();
+                fecharTodosModais();
+                await carregarMeusGrupos();
+                abrirGrupoPorId(idEditado);
+            } else {
+                feedback.textContent = 'Criando grupo...';
+
+                const { data: novoGrupo, error: groupError } = await supabase
+                    .from('groups')
+                    .insert({
+                        name: nome,
+                        description: descricao,
+                        banner_url: bannerUrlFinal,
+                        icon_url: iconUrlFinal,
+                        owner_id: usuarioAtual.id
+                    })
+                    .select()
+                    .single();
+
+                if (groupError) {
+                    feedback.textContent = groupError.code === '23505'
+                        ? 'Já existe um grupo com esse nome.'
+                        : 'Erro ao criar grupo: ' + groupError.message;
+                    submitBtn.disabled = false;
+                    return;
+                }
+
+                await supabase.from('group_members').insert({
+                    user_id: usuarioAtual.id,
+                    group_id: novoGrupo.id
+                });
+
+                submitBtn.disabled = false;
+                limparFormularioGrupo();
+                fecharTodosModais();
+
+                await carregarMeusGrupos();
+                abrirGrupoPorId(novoGrupo.id);
+            }
+        });
+    }
+}
+
 async function abrirGrupoPorId(groupId) {
     const { data: grupo, error } = await supabase
         .from('groups')
@@ -754,6 +1054,7 @@ async function abrirGrupoPorId(groupId) {
     if (error || !grupo) return;
 
     grupoAtivoId = groupId;
+    grupoAtualObj = grupo;
 
     const groupHeader = document.getElementById('groupHeader');
     const groupBannerImg = document.getElementById('groupBannerImg');
@@ -762,12 +1063,19 @@ async function abrirGrupoPorId(groupId) {
     const groupDescription = document.getElementById('groupDescription');
     const postGroupSelect = document.getElementById('postGroup');
     const btnJoinGroup = document.getElementById('btnJoinGroup');
+    const btnEditGroup = document.getElementById('btnEditGroup');
 
     groupTitle.textContent = grupo.name;
     groupDescription.textContent = grupo.description || '';
     groupBannerImg.src = grupo.banner_url;
     groupIconImg.src = grupo.icon_url;
     groupHeader.classList.remove('hidden');
+
+    // Mostra o botão Editar somente se o usuário logado for o dono do grupo
+    if (btnEditGroup) {
+        const ehDono = usuarioAtual && grupo.owner_id === usuarioAtual.id;
+        btnEditGroup.classList.toggle('hidden', !ehDono);
+    }
 
     if (postGroupSelect && meusGrupos.some(g => g.id === groupId)) {
         postGroupSelect.value = groupId;
@@ -802,47 +1110,4 @@ async function abrirGrupoPorId(groupId) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
     carregarFeed(groupId);
-}
-
-export async function TelaGrupos() {
-    const groupHeader = document.getElementById('groupHeader');
-    const logoHome = document.getElementById('logoHome');
-    const btnJoinGroup = document.getElementById('btnJoinGroup');
-
-    if (btnJoinGroup) {
-        btnJoinGroup.addEventListener('click', async () => {
-            if (!usuarioAtual) {
-                document.getElementById('btnAuthAction')?.click();
-                return;
-            }
-            if (!grupoAtivoId) return;
-
-            const jaEhMembro = btnJoinGroup.classList.contains('joined');
-            if (jaEhMembro) {
-                await supabase
-                    .from('group_members')
-                    .delete()
-                    .match({ user_id: usuarioAtual.id, group_id: grupoAtivoId });
-            } else {
-                await supabase
-                    .from('group_members')
-                    .insert({ user_id: usuarioAtual.id, group_id: grupoAtivoId });
-            }
-
-            await carregarMeusGrupos();
-            abrirGrupoPorId(grupoAtivoId);
-        });
-    }
-
-    if (logoHome) {
-        logoHome.addEventListener('click', () => {
-            grupoAtivoId = null;
-            groupHeader?.classList.add('hidden');
-            document.querySelectorAll('#groupsList .group-item').forEach(i => i.classList.remove('active'));
-            carregarFeed(null);
-        });
-    }
-
-    await carregarMeusGrupos();
-    carregarFeed(null);
 }

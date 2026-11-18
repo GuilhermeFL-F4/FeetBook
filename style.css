@@ -339,10 +339,12 @@ body.FeetChan {
 .sidebar-widget, 
 .config-options,
 .search-bar,
+.btn-create-group,
 .btn-upload,
 .btn-login,
 .auth-modal,
 .upload-modal,
+.create-group-modal,
 .group-header-card {
     border: 4px solid #0a0001; 
     border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px;
@@ -919,6 +921,149 @@ body.FeetFunny .chat-form button {
 }
 
 /* =========================================
+   TELA DE CRIAR GRUPO
+   ========================================= */
+.create-group-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 460px;
+    max-width: 92vw;
+    max-height: 90dvh;
+    overflow-y: auto;
+    background-color: #ffffff;
+    color: #8a0009;
+    padding: 25px;
+    z-index: 3000;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.create-group-modal.active {
+    display: flex;
+}
+
+.close-create-group {
+    position: absolute;
+    top: 12px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 1.4em;
+    cursor: pointer;
+    color: inherit;
+}
+
+.create-group-modal h2 {
+    text-align: center;
+    font-size: 1.3em;
+}
+
+.input-group textarea {
+    padding: 10px 12px;
+    border: 2px solid #0a0001;
+    border-radius: 8px;
+    font-size: 1em;
+    outline: none;
+    resize: none;
+    font-family: inherit;
+}
+
+.group-dropzone {
+    min-height: 95px;
+    padding: 10px;
+}
+
+.group-banner-preview {
+    width: 100%;
+    height: 110px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.group-icon-preview {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0a0001;
+}
+
+.group-banner-preview.hidden,
+.group-icon-preview.hidden,
+#bannerDropText.hidden,
+#iconDropText.hidden {
+    display: none;
+}
+
+/* Tema FeetFunny */
+body.FeetFunny .create-group-modal {
+    background-color: #161616;
+    color: #f5f2f2;
+    border-color: #faed35;
+    box-shadow: 4px 4px 0px #faed35;
+}
+
+body.FeetFunny .input-group textarea {
+    background-color: #262626;
+    color: #f5f2f2;
+    border-color: #faed35;
+}
+
+@media (max-width: 768px) {
+    .user-actions button {
+        margin-left: 4px;
+        padding: 6px 10px;
+        font-size: 0.85em;
+    }
+}
+
+/* =========================================
+   BOTÃO EDITAR GRUPO NO CABEÇALHO
+   ========================================= */
+.group-header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.group-header-actions .btn-join-group {
+    margin-left: 0;
+}
+
+.btn-edit-group {
+    padding: 8px 12px;
+    background-color: #ffffff;
+    color: #8a0009;
+    border: 3px solid #0a0001;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 3px 3px 0px #1b1b1b;
+}
+
+.btn-edit-group.hidden {
+    display: none;
+}
+
+body.FeetFunny .btn-edit-group {
+    background-color: #262626;
+    color: #faed35;
+    border-color: #faed35;
+}
+
+@media (max-width: 600px) {
+    .group-header-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+} 
+
+/* =========================================
    RESPONSIVIDADE (CELULARES)
    ========================================= */
 @media (max-width: 768px) {
@@ -1079,6 +1224,40 @@ body.FeetFunny .chat-form button {
     .group-details {
         padding-top: 36px;
     }
+
+    /* =========================================
+   ÍCONES PERSONALIZADOS (PASTA IMG)
+   ========================================= */
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.ui-icon {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#button-config {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 
    
     /* =========================================
@@ -1290,4 +1469,35 @@ body.FeetFunny .btn-join-group.joined {
     background-color: #262626;
     color: #faed35;
     border-color: #faed35;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icon {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.ui-icon {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+#button-config {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
